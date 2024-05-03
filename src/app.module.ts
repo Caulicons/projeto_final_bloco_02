@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { DevService } from './modules/db/connection/services/dev.service';
+import { CategoriaModule } from './modules/entities/categoria/categoria.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { DevService } from './modules/db/connection/services/dev.service';
       useClass: DevService,
       imports: [ConfigModule],
     }),
+    CategoriaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
