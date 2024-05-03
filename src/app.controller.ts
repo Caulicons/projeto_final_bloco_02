@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Get } from '@nestjs/common/decorators/http/request-mapping.decorator';
 
 @Controller()
 export class AppController {
