@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DevService } from './modules/db/connection/services/dev.service';
 import { CategoriaModule } from './modules/entities/categoria/categoria.module';
+import { ProdutoModule } from './modules/entities/produtos/produto.module';
 
 @Module({
   imports: [
@@ -15,8 +14,9 @@ import { CategoriaModule } from './modules/entities/categoria/categoria.module';
       imports: [ConfigModule],
     }),
     CategoriaModule,
+    ProdutoModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

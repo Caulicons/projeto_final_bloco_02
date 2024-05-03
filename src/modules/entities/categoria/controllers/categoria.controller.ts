@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CategoriaService } from '../services/categoria.service';
-import { CategoriaModel } from '../model/categoria.model';
+import { Categoria } from '../model/categoria.entity';
 import { CategoriaDTO } from '../dto/categoria.dto';
 
 @Controller('/categorias')
@@ -16,23 +16,23 @@ export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
   // Get's ----------------------------------------------------------
   @Get()
-  async findAll(): Promise<CategoriaModel[]> {
+  async findAll(): Promise<Categoria[]> {
     return await this.categoriaService.findAll();
   }
 
   @Get('/:id')
-  async findById(@Param('id') id: number): Promise<CategoriaModel> {
+  async findById(@Param('id') id: number): Promise<Categoria> {
     return await this.categoriaService.findById(id);
   }
 
   @Get('/name/:name')
-  async findByName(@Param('name') name: string): Promise<CategoriaModel> {
+  async findByName(@Param('name') name: string): Promise<Categoria> {
     return await this.categoriaService.findByName(name);
   }
 
   // Post ----------------------------------------------------------
   @Post()
-  async create(@Body() categoria: CategoriaDTO): Promise<CategoriaModel> {
+  async create(@Body() categoria: CategoriaDTO): Promise<Categoria> {
     return await this.categoriaService.create(categoria);
   }
 

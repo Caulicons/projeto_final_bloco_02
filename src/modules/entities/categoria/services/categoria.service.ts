@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriaModel } from '../model/categoria.model';
+import { Categoria } from '../model/categoria.entity';
 import { ILike, Repository } from 'typeorm';
 import { HttpException, Injectable } from '@nestjs/common';
 import { CategoriaDTO } from '../dto/categoria.dto';
@@ -7,17 +7,24 @@ import { CategoriaDTO } from '../dto/categoria.dto';
 @Injectable()
 export class CategoriaService {
   constructor(
-    @InjectRepository(CategoriaModel)
-    private readonly categoriaRepository: Repository<CategoriaModel>,
+    @InjectRepository(Categoria)
+    private categoriaRepository: Repository<Categoria>,
   ) {}
   // Gets --------------------------------------------------------
-  async findAll(): Promise<CategoriaModel[]> {
-    return await this.categoriaRepository.find();
+  async findAll(): Promise<Categoria[]> {
+    return await this.categoriaRepository.find({
+      relations: {
+        produtos: true,
+      },
+    });
   }
 
-  async findById(id: number): Promise<CategoriaModel> {
+  async findById(id: number): Promise<Categoria> {
     const categoria = await this.categoriaRepository.findOne({
       where: { id },
+      relations: {
+        produtos: true,
+      },
     });
 
     if (!categoria)
@@ -26,9 +33,12 @@ export class CategoriaService {
     return categoria;
   }
 
-  async findByName(name: string): Promise<CategoriaModel> {
+  async findByName(name: string): Promise<Categoria> {
     const categorias = await this.categoriaRepository.findOne({
       where: { name: ILike(`%${name}%`) },
+      relations: {
+        produtos: true,
+      },
     });
 
     if (!categorias)
@@ -38,7 +48,7 @@ export class CategoriaService {
   }
 
   // Create --------------------------------------------------------
-  async create(categoria: CategoriaDTO): Promise<CategoriaModel> {
+  async create(categoria: CategoriaDTO): Promise<Categoria> {
     const categoriaExiste = await this.categoriaRepository.findOne({
       where: { name: ILike(`%${categoria.name}%`) },
     });
@@ -50,7 +60,7 @@ export class CategoriaService {
   }
 
   // Update --------------------------------------------------------
-  async update(id: number, categoria: CategoriaDTO): Promise<CategoriaModel> {
+  async update(id: number, categoria: CategoriaDTO): Promise<Categoria> {
     const categoriaExiste = await this.findById(id);
 
     if (!categoriaExiste)
